@@ -30,13 +30,76 @@
 -->
 
 <div id="app">
-  <h2>1. 双大括号表达式</h2>
-
+  <h2>1. 双大括号表达式/插值</h2>
+  <p>---{{content}}---</p>
+  <p>{{content.toUpperCase()}}</p>
+<!-- 
+  invalid expression: 非法的表达式 
+-->
   <h2>2. 指令一: 强制数据绑定</h2>
+  <!-- 
+    让标签的属性值是一个表达式(动态的值) 
+    一旦属性值需要是一个动态的值, 就需要使用强制数据绑定
+  -->
+
+  <a href="url">去学习</a><br>
+  <a v-bind:href="url">去学习</a> <br>
+  <a :href="url">去学习</a> <br>
 
   <h2>3. 指令二: 绑定事件监听</h2>
+  <button v-on:click="test1">test11111</button><br>
+  <button @click="test2">test22222</button><br>
 
 </div>
+
+<script src="../js/vue.js"></script>
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      content: 'CBA I Love Game',
+      url: 'http://www.atguigu.com'
+    },
+
+    methods: { // 包含一些事件回调函数/方法的对象
+      test1 () {
+        alert('点击了')
+      },
+
+      test2 (event) {
+        alert(event.target.innerHTML)
+      }
+    }
+  })
+
+</script>
+
+<script>
+/* 
+表达式:
+  表达式是肯定没有分号的 
+  表达式会返回一个结果数据(可以是undefined)出来
+  表达式是不完整的指令, 只有变为语句来行
+语句: 
+  可以有有分号, 也可以没有(编译时会自动添加)
+  语句是去对内部中的数据进行操作工作的, 不会返回出一个数据
+  语句是一个完整的JS的指令, 可以单独存在
+*/
+/* 
+function test() { // 函数声明语句
+  
+}
+const test2 = function () {  // 函数表达式: 函数定义是一个表达式
+  
+}
+(function () {})()
+var a = 3
+var b = a + 1
+test()  // test()是语句
+const f = test() // test()是表达式
+
+*/
+</script>
 
 </body>
 </html>

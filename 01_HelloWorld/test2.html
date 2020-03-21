@@ -20,6 +20,10 @@
         有这个方向后, 整体就称为双向数据绑定
   4. 显示数据 : {{xxx}}
   5. 理解vue的mvvm实现
+      M: Model/模型, 在vue中就是包含数据属性的data对象: 为模板提供数据
+      V: View/视图, 在vue就是模板页面/真实DOM/显示的页面: 动态显示data中的数据
+      VM: ViewModel/视图模型, 在Vue中就是Vue的实例对象: 
+          通过数据绑定/DOM监听来实现M与V之间双向数据绑定
 -->
 
 <!-- 
@@ -41,7 +45,7 @@
 <script src="../js/vue.js"></script>
 <script>
   // 创建Vue的实例
-  const vue = new Vue({ // 配置对象: 属性名是一些特定名称, 每个属性就是一个选项(可选的项)
+  const vm = new Vue({ // 配置对象: 属性名是一些特定名称, 每个属性就是一个选项(可选的项)
     el: '#test', // element, 通过选择来确定页面模板的根元素
     data: { // 包含一些属性数据的对象, 为模板提供可以直接访问的数据
       msg: 'atguigu',
@@ -51,10 +55,12 @@
 
   // 更新daa中的msg2
   setTimeout(() => {
-    vue.msg2 = 'dcba'  // 内部更新的是data中的msg2
-  }, 10000)
+    console.log(vm.msg2)  // abcd
+    vm.msg2 = 'dcba'  // 内部更新的是data中的msg2    数据代理
+    console.log(vm.msg2)
+  }, 1000)
 
-  console.log(vue)
+  console.log(vm)
 
 
   /* 一个库使用最方便的方式: 写写配置功能就有了 */
