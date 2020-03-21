@@ -10,9 +10,62 @@
 2. 列表排序
 -->
 
+<div id="demo">
+  <input type="text" v-model="searchName">
+  <ul>
+    <!-- vue要求v-for遍历的每个标签都有一个唯一的key值 -->
+    <li v-for="(p, index) in filterPersons" :key="index">
+      {{p.id}}--{{p.name}}--{{p.age}}
+    </li>
+  </ul>
+
+  <button>年龄升序</button>
+  <button>年龄降序</button>
+  <button>原本顺序</button>
+</div>
+
 <script type="text/javascript" src="../js/vue.js"></script>
 <script type="text/javascript">
+  new Vue({
+    data() {
+      return {
+        searchName: '',
+        persons: [
+          {id: 1, name: 'tom', age: 15},
+          {id: 3, name: 'jack', age: 13},
+          {id: 4, name: 'bob', age: 17},
+          {id: 5, name: 'merry', age: 14},
+          {id: 7, name: 'cat', age: 16},
+        ]
+      }
+    },
 
+    computed: {
+      filterPersons () {
+        // 1. 取出依赖数据
+        // const searchName = this.searchName
+        // const persons = this.persons
+        const { searchName, persons } = this
+
+        // 2. 计算产生一个新数据  
+          // 'cat'.indexOf('atm')  ==> -1
+          // 'cat'.indexOf('at')  ==> 1
+          /* 
+          const arr = array.filter((item, index) => true/false)
+          如果遍历的回调函数返回true, 对应的item就会放入arr中, 否则不放
+          */
+         // 找出所有name包含searchName的person组成一个新数组
+        const arr = persons.filter(p => p.name.indexOf(searchName)!==-1)
+
+        // 3. 返回新数据
+        return arr
+      }
+    },
+  }).$mount('#demo')
+
+  /* 
+  当前页面中的变化数据
+  */
 </script>
 </body>
 </html>

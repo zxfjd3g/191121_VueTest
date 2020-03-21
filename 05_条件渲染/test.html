@@ -7,18 +7,39 @@
 <body>
 <!--
 1. 条件渲染指令
-  v-if
-  v-else
-  v-show
+  v-if / v-else: 在内存中干掉标签对象来实现隐藏, 重新显示需要重新创建
+  v-show: 通过样式来实现隐藏和显示
 2. 比较v-if与v-show
   如果需要频繁切换 v-show 较好
 -->
 
 <div id="demo">
+  <p id="a" v-if="ok">表白成功</p>
+  <div id="b" v-else>表白失败</div>
+
+  <p id="a2" v-show="ok">求婚成功</p>
+  <p id="b2" v-show="!ok">求婚失败</p>
+
+  <hr>
+  <button @click="toogle">切换</button>
 </div>
 
 <script type="text/javascript" src="../js/vue.js"></script>
 <script type="text/javascript">
+  new Vue({
+    el: '#demo',
+    data() {
+      return {
+        ok: true
+      }
+    },
+
+    methods: {
+      toogle () {
+        this.ok = !this.ok
+      }
+    }
+  })
 </script>
 </body>
 </html>

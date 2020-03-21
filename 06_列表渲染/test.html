@@ -17,14 +17,37 @@
 
 <div id="demo">
   <h2>测试: v-for 遍历数组</h2>
+  <ul>
+    <!-- vue要求v-for遍历的每个标签都有一个唯一的key值 -->
+    <li v-for="(p, index) in persons" :key="index">
+      {{p.id}}--{{p.name}}--{{p.age}}
+    </li>
+  </ul>
 
   <h2>测试: v-for 遍历对象</h2>
+  <ul>
+    <li v-for="(value, key) in persons[1]" :key="key">
+      {{key}}: {{value}}
+    </li>
+  </ul>
 
 </div>
 
 <script type="text/javascript" src="../js/vue.js"></script>
 <script type="text/javascript">
-
+  new Vue({
+    data() {
+      return {
+        persons: [
+          {id: 1, name: 'tom', age: 15},
+          {id: 3, name: 'jack', age: 13},
+          {id: 4, name: 'bob', age: 17},
+          {id: 5, name: 'merry', age: 14},
+          {id: 7, name: 'cat', age: 16},
+        ]
+      }
+    },
+  }).$mount('#demo')
 </script>
 </body>
 </html>
