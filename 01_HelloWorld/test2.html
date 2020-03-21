@@ -11,7 +11,13 @@
   2. 创建Vue对象
     el : 指定根element(选择器)
     data : 初始化数据(页面可以访问)
-  3. 双向数据绑定 : v-model
+  3. 双向数据绑定 : v-model    页面 <===>  data数据
+    1). 如果改变了data中某个属性数据, vue会自动更新对应位置的界面    
+        数据流向: data ==> 页面
+        这个过程称为数据单向绑定, 简称数据绑定
+    2). 如果改变了页面输入, vue会自动将页面最新的数据保存到data对应的属性上  
+        数据流向: 页面 ==> data
+        有这个方向后, 整体就称为双向数据绑定
   4. 显示数据 : {{xxx}}
   5. 理解vue的mvvm实现
 -->
@@ -27,6 +33,7 @@
   <p>Hello {{msg}}</p>
   <p>Hello2 {{msg}}</p>
   <p>Hello3 {{msg}}</p>
+  <p>{{msg2}}</p>
 </div>
 
 <div>{{msg}}</div>
@@ -34,14 +41,25 @@
 <script src="../js/vue.js"></script>
 <script>
   // 创建Vue的实例
-  new Vue({ // 配置对象: 属性名是一些特定名称, 每个属性就是一个选项(可选的项)
+  const vue = new Vue({ // 配置对象: 属性名是一些特定名称, 每个属性就是一个选项(可选的项)
     el: '#test', // element, 通过选择来确定页面模板的根元素
     data: { // 包含一些属性数据的对象, 为模板提供可以直接访问的数据
-      msg: 'atguigu'
+      msg: 'atguigu',
+      msg2: 'abcd'
     }
   })
 
+  // 更新daa中的msg2
+  setTimeout(() => {
+    vue.msg2 = 'dcba'  // 内部更新的是data中的msg2
+  }, 10000)
+
+  console.log(vue)
+
+
   /* 一个库使用最方便的方式: 写写配置功能就有了 */
+
+
 </script>
 </body>
 </html>
