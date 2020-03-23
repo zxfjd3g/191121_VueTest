@@ -21,6 +21,12 @@
     <!-- vue要求v-for遍历的每个标签都有一个唯一的key值 -->
     <li v-for="(p, index) in persons" :key="index">
       {{p.id}}--{{p.name}}--{{p.age}}
+      <!-- 点击自动调用deleteP时传递的是event对象 -->
+      <!-- <button @click="deleteP">删除</button>  -->
+      <!-- 在点击前不执行, 在点击时才执行 -->
+      -- <button @click="deleteP(index)">删除</button> 
+      --<button @click="updateP(index, {id: Date.now(), name: 'XM', age: 14})">更新</button>
+
     </li>
   </ul>
 
@@ -31,6 +37,12 @@
     </li>
   </ul>
 
+  <hr>
+  <p>{{msg}}</p>
+  <p>{{msg2.title}}</p>
+
+  <button @click="update">更新</button>
+
 </div>
 
 <script type="text/javascript" src="../js/vue.js"></script>
@@ -38,6 +50,11 @@
   new Vue({
     data() {
       return {
+        msg: 'abc',
+        msg2: {
+          title: 'xxx',
+          cotent: 'yyy'
+        },
         persons: [
           {id: 1, name: 'tom', age: 15},
           {id: 3, name: 'jack', age: 13},
@@ -47,7 +64,57 @@
         ]
       }
     },
+
+    methods: {
+      deleteP (index) {
+        // 删除指定下标的元素
+        this.persons.splice(index, 1)  // splice()不是数组原生的方法, 而vue重写后的
+      },
+
+      updateP (index, newP) {
+        // 方式1: 直接通过下标修改数组元素  ==> 没有效果
+        // this.persons[index] = newP // 没有效果
+
+        // 方式2: 通过数组的方法来修改数组元素  ==> 有效果
+        this.persons.splice(index, 1, newP)  // 可以
+
+        // 方式3: 更新数组元素对象内部的属性  ==> 也有效果
+        // const p = this.persons[index]
+        // p.id = newP.id
+        // p.name = newP.name
+        // p.age = newP.age
+
+        // 改变data对象最外层的属性值  ==> 有效果
+        // this.persons = []
+      },
+
+      update () {
+        this.msg = 'aaaa'
+        this.msg2.title = 'bbbb'   // 并没有更新msg2本身, 而是更新msg2指向对象内部数据
+
+      }
+    },
   }).$mount('#demo')
+
+  /* 
+  vue的响应式数据
+    vue中的data对象中的数据是响应式数据  ==> 也可称vue是一个响应式的库
+    响应式数据: 数据一旦发生改变, 界面就会自动更新
+    data对象中的属性有这么情况:
+      基本类型: 一旦值发生改变, 就会自动更新
+        如果改变data对象最外层的属性值, 会自动更新
+      对象: 对象内部数据发生了变化, 也会自动更新
+      数组: 数组元素发生变化, 是否更新界面?
+        如果直接通过下标去更新, 没有效果
+        如果通过数组的方法去更新, 有效果
+    vue中如何对data中的数据进行响应式(监视)/数据绑定处理?
+      对象: 通过Object.defineProperty()给所有层次的属性都添加setter监视, 
+        从而在对象属性数据发生改变时, 去自动更新界面
+      数组: 重写(重新实现)数组上的一系列用于更新数组元素的方法
+          1). 先调用数组原本的对应方法, 去更新数组元素
+          2). 去更新界面
+        如果通过arr[index] = value来更新数组元素, vue不知道元素变化了, 不会更新界面
+  */
 </script>
 </body>
 </html>

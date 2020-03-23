@@ -1,6 +1,3 @@
-1. 回调函数的3个问题
-2. vm监视data中数据的特点
-
 # 1. Vue.js是什么?
     1). 一位华裔前Google工程师(尤雨溪)开发的前端js库
     2). 作用: 动态构建用户界面
@@ -24,9 +21,9 @@
 # 2. 基本使用
     1). 引入vue.js
     2). 创建Vue实例对象(vm), 指定选项(配置)对象
-        el: 指定dom标签容器的选择器
+        el: 指定dom标签容器的选择器   vm.$mount(selector)
         data: 指定初始化状态数据的对象/函数(返回一个对象)
-    3). 在页面模板中使用{{}}或vue指令
+    3). 在页面模板中使用{{}}或ue指令v
     4). MVVM模式
         M: Model(模型), vue中是data(为view提供数据)
         V: View(视图), vue中是模板页面(显示data中的数据)
@@ -42,8 +39,8 @@
     对象或函数类型
     指定初始化状态属性数据的对象
     vm也会自动拥有data中所有属性
-    页面中可以直接访问使用
-    数据代理: 由vm对象来代理对data中所有属性的操作(读/写)
+    页面中可以直接访问使用  vm.xxx = value    vm._data.xxx = value
+    数据代理: 由vm对象来代理对data中所有属性的操作(读/写) ==> 简化编码 
     data数据监视的特点:
         1. vue会监视data中所有层次的属性
         2. 对象中的属性数据通过添加set方法来来实现监视
@@ -69,6 +66,8 @@
         什么时候回调执行?
         它的作用是什么?
         函数中的this是谁?
+    vue控制的回调函数this是vm, 所有这些回调函数不能使用箭头函数
+    在vue控制的回调函数中编写非vue控制的回调函数, 必须要用箭头函数this才是vm
 
 ## 5). watch
     包含多个属性监视的对象
@@ -138,7 +137,7 @@
         * v-show: 就会在标签中添加display样式, 如果vlaue为true, display=block, 否则是none
     v-for : 遍历
         * 遍历数组 : v-for="(person, index) in persons"  :key="person.id" 
-        * 遍历对象 : v-for="value in person"   $key
+        * 遍历对象 : v-for="(value, key) in person"   
     v-on : 绑定事件监听
         * v-on:事件名, 可以缩写为: @事件名
         * 监视具体的按键: @keyup.keyCode   @keyup.enter

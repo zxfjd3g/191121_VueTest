@@ -23,16 +23,93 @@
 <div id="example">
 
   <h2>1. 绑定监听</h2>
-
+  <p>{{msg}}</p>
+  <button @click="test1">test111</button>
+  <button @click="test2('atguigu')">test222</button>
+  <button @click="test3('atguigu', $event)">test333</button>
+  <!-- <button @click="test4">test444</button> -->
+  <button @click="msg += '+++'">test444</button>
+  <!-- this/vm.msg += '+++' -->
+  
   <h2>2. 事件修饰符</h2>
+  <!-- 
+    阻止事件的默认行为
+    停止事件冒泡
+  -->
+  <a href="http://www.baidu.com" @click.prevent="test5">去学习</a>
+  <div style="width: 200px;height: 200px;background: blue;" @click="test6">
+    <div style="width: 100px;height: 100px;background: green;" 
+        @click.stop="test7"></div>
+  </div>
+  <button @click.once="test8">只响应一次点击</button>
+
+  <form action="/xxx">
+    <input type="submit" value="提交" @click.prevent="submit">
+  </form>
 
   <h2>3. 按键修饰符</h2>
+
+  <input type="text" v-model="content" @keyup.13="test9">
+  <input type="text" v-model="content" @keyup.enter="test9">
 
 </div>
 
 <script type="text/javascript" src="../js/vue.js"></script>
 <script type="text/javascript">
+  const vm = new Vue({
+    el: '#example',
+    data() {
+      return {
+        msg: 'abc',
+        content: 'Hello'
+      }
+    },
 
+    methods: {
+      submit () {
+        alert('发一个注册的ajax请求')
+      },
+
+      test1 (event) {
+        this.msg += '---'
+        alert(event.target.innerHTML)
+      },
+
+      test2 (content) {
+        alert(content)
+      },
+
+      test3 (content, event) {
+        alert(content + '--' + event.target.innerText)
+      },
+
+      test4 () {
+        this.msg += '+++'
+      },
+
+      test5 (event) {
+        // event.preventDefault();
+        alert('点击了链接')
+      },
+
+      test6 () {
+        alert('外面')
+      },
+      test7 () {
+        alert('里面')
+      },
+      test8 () {
+        alert('响应点击')
+      },
+
+      test9 (event) {
+        /* if (event.keyCode==13) {
+          alert(this.content)
+        } */
+        alert(this.content)
+      }
+    },
+  })
 </script>
 </body>
 </html>

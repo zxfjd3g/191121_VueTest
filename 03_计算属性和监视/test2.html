@@ -70,8 +70,9 @@
         1). 初始显示第1次调用
         2). 依赖数据发生改变时都会调用
       */
-      fullName1 () {
-        // console.log(this)
+      // fullName1: () => {  // 箭头函数没有自己的this, 使用的是外部this, 也就是window
+      fullName1 () { 
+        console.log(this)
         console.log('fullName1()')
         return this.firstName + '-' + this.lastName
       },
@@ -94,7 +95,10 @@
 
     methods: { // methods中所有方法都会成为vm的方法
       test () {
-
+          // setTimeout(function () { // 不可以, 定时器回调函数的this是window
+          setTimeout(() => { // 不可以, 定时器回调函数的this是window
+            console.log(this.firstName)
+          }, 1000);
       }
     }
   })

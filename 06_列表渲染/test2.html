@@ -19,9 +19,13 @@
     </li>
   </ul>
 
-  <button>年龄升序</button>
-  <button>年龄降序</button>
-  <button>原本顺序</button>
+  <button @click="setOrderType(1)">年龄升序</button>
+  <button @click="setOrderType(2)">年龄降序</button>
+  <button @click="setOrderType(0)">原本顺序</button>
+  <br>
+  <button @click="orderType = 1">年龄升序2</button>
+  <button @click="orderType = 2">年龄降序2</button>
+  <button @click="orderType = 0">原本顺序2</button>
 </div>
 
 <script type="text/javascript" src="../js/vue.js"></script>
@@ -36,7 +40,8 @@
           {id: 4, name: 'bob', age: 17},
           {id: 5, name: 'merry', age: 14},
           {id: 7, name: 'cat', age: 16},
-        ]
+        ],
+        orderType: 0,  // 排序的类型  0: 不排序, 1: 升序 2: 降序
       }
     },
 
@@ -45,7 +50,7 @@
         // 1. 取出依赖数据
         // const searchName = this.searchName
         // const persons = this.persons
-        const { searchName, persons } = this
+        const { searchName, persons, orderType } = this
 
         // 2. 计算产生一个新数据  
           // 'cat'.indexOf('atm')  ==> -1
@@ -57,10 +62,34 @@
          // 找出所有name包含searchName的person组成一个新数组
         const arr = persons.filter(p => p.name.indexOf(searchName)!==-1)
 
+        // 可能需要进行排序
+        if (orderType!==0) {
+          arr.sort((p1, p2) => {
+            /* 
+            函数的返回值是一个数值
+            返回正值: 将右边的p2放在p1的左边
+            返回0: 不用动
+            返回负值: 将p2放在p1的右边
+            */
+            if (orderType===2) {
+              return p2.age - p1.age  // 降序
+            } else {
+              return p1.age - p2.age // 升序
+            }
+          })
+        }
+
         // 3. 返回新数据
         return arr
       }
     },
+    
+    methods: {
+      setOrderType (orderType) {
+        this.orderType = orderType
+      }
+    },
+
   }).$mount('#demo')
 
   /* 
