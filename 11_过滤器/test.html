@@ -31,10 +31,15 @@
   <p>开始时间(年月日): {{startTime | dateFormat2('YYYY-MM-DD')}}</p>
   <p>开始时间(时分秒): {{startTime | dateFormat2('HH:mm:ss')}}</p>
 </div>
+<hr>
+<div id="test2">
+  <p>开始时间(年月日时分秒): {{startTime | dateFormat}}</p>
+  <p>开始时间(年月日时分秒): {{startTime | dateFormat2}}</p>
+</div>
 <script src="https://cdn.bootcss.com/moment.js/2.24.0/moment.js"></script>
 <script type="text/javascript" src="../js/vue.js"></script>
 <script>
-  // 定义全局过滤器
+  // 定义全局过滤器   ==> 对所有vm的模板都有效果
   Vue.filter('dateFormat', function (value, formatStr='YYYY-MM-DD HH:mm:ss') { // 用于解析过滤器的回调函数
     console.log('dateFormat callback', value)
     // 2020-03-23 11:57:03
@@ -49,13 +54,21 @@
       }
     },
 
-    // 定义局部过滤器
+    // 定义局部过滤器  ==> 只对当前vm管理的模板有效
     filters: {
       dateFormat2: function (value, formatStr) {
         return moment(value).format(formatStr || 'YYYY-MM-DD HH:mm:ss')
       }
     }
   }).$mount('#test')
+
+  new Vue({
+    data() {
+      return {
+        startTime: Date.now() - 100000
+      }
+    },
+  }).$mount('#test2')
 </script>
 </body>
 </html>
