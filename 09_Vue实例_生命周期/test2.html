@@ -38,6 +38,17 @@
       }
     },
 
+    beforeCreate() {
+      console.log('beforeCreate()')
+    },
+    created() {
+      console.log('created()')
+    },
+
+    beforeMount() {
+      console.log('beforeMount()')
+    },
+
     // 在初始挂载显示后立即执行
     mounted() {
       console.log('mounted()')
@@ -49,11 +60,22 @@
       }, 1000)
     },
 
+    beforeUpdate() {
+      console.log('beforeUpdate()')
+    },
+    updated() {
+      console.log('updated()')
+    },
+
     // 在vm死亡前自动执行
     beforeDestroy() {
       console.log('beforeDestroy()')
       // 执行一些收尾的工作: 清除定时器
       clearInterval(this.intervalId)  // 从this/vm上读取前面保存intervalId
+    },
+
+    destroyed() {
+      console.log('destroyed()')
     },
 
     methods: {

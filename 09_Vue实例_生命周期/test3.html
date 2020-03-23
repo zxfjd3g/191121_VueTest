@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>09_Vue实例_生命周期</title>
+</head>
+<body>
+<!--
+1. vue对象的生命周期
+  1). 初始化显示
+    * beforeCreate(): 不能通过this读取data中的数据
+       实现数据代理与数据监视
+    * created(): 在此开始可以通过this读取data中的数据
+       实现在内存中去编译/解析模板
+    * beforeMount(): 不能通过ref来读取页面中的标签
+       将编译的DOM挂载到页面上显示
+    * mounted(): 在此开始可以通过ref来读取页面中的标签
+  2). 更新状态
+       更新了data中的数据
+    * beforeUpdate(): 读取界面内容是老的
+       更新界面
+    * updated(): 读取界面内容是新的
+  3). 销毁vue实例: vm.$destory()
+    * beforeDestory(): 死亡前调用
+    * destoryed(): 死亡后调用
+2. 常用的生命周期方法
+    * mounted() / created(): 发送ajax请求, 启动定时器等异步任务
+    * beforeDestory(): 做收尾工作, 如: 清除定时器
+-->
+
+<div id="test">
+  <button @click="destroyVM">destroy vm</button>
+  <p v-show="isShow">atguigu.com</p>
+  <p ref="name">{{isShow ? '可以显示' : '不可以显示'}}</p>
+</div>
+
+<script type="text/javascript" src="../js/vue.js"></script>
+<script type="text/javascript">
+  const vm = new Vue({
+    el: '#test',
+    data() {
+      return {
+        isShow: true
+      }
+    },
+
+    /* 在此方法不能通过vm来读取data中的数据 */
+    beforeCreate() {
+      console.log('beforeCreate()', this.isShow)  // undefined
+    },
+    
+    /* 
+    在此实现数据代理和监视(setter)
+    */
+    
+    /* 从此方法开始都可以通过vm来读取data中的数据 */
+    created() {
+      console.log('created()', this.isShow) // true
+    },
+
+    /* 挂载显示前执行 */
+    beforeMount() {
+      console.log('beforeMount()')
+
+      const p = this.$refs.name
+      console.log(this.isShow, p)  // 通过ref得不到页面中的DOM元素对象
+    },
+
+    /* 
+    在这之前, 通过ref得不到页面中的DOM元素对象
+    在此将模板编译产生的DOM插件页面中显示
+    在这之后, 通过ref得不到页面中的DOM元素对象
+    */
+
+    // 在初始挂载显示后立即执行
+    mounted() {
+      console.log('mounted()')
+      // 启动循环定时器, 每隔1s就切换一下isShow的值
+      // 将定时器的id保存到this/vm上
+      this.intervalId = setInterval(() => {
+        console.log('interval callback()')
+        this.isShow = !this.isShow
+      }, 1000)
+
+
+      // 读取有ref标识的标签对象
+      /* 
+      $refs属性是一个对象
+      对象中包含的是所有有ref属性的标签对象, 
+      属性名是ref指定的名称, 属性值是标签对象
+      */
+      const p = this.$refs.name
+      console.log(this.isShow, p, p.innerHTML) // 通过ref得不到页面中的DOM元素对象
+
+    },
+
+    /* 在更新界面前调用(注意数据已经更新) */
+    beforeUpdate() {
+      console.log('beforeUpdate()', this.$refs.name.innerHTML, this.isShow)
+    },
+
+    /* 
+    在此之前读取的是老的界面
+    在此处去更新界面
+    在此之后读取的是新的界面
+    */
+
+    /* 在更新界面后调用 */
+    updated() {
+      console.log('updated()', this.$refs.name.innerHTML, this.isShow)
+    },
+
+    // 在vm死亡前自动执行
+    beforeDestroy() {
+      console.log('beforeDestroy()')
+      // 执行一些收尾的工作: 清除定时器
+      clearInterval(this.intervalId)  // 从this/vm上读取前面保存intervalId
+    },
+
+    destroyed() {
+      console.log('destroyed()')
+    },
+
+    methods: {
+      destroyVM () {
+        this.$destroy()  // 一旦销毁vm后, 界面变为一个静态界面, 不再会因为数据而自动更新界面
+      }
+    },
+  })
+
+  console.log(vm)
+
+  
+</script>
+</body>
+</html>
