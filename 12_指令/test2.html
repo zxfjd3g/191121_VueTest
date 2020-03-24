@@ -13,10 +13,8 @@
   })
 2. 注册局部指令
   directives : {
-    'my-directive' : {
-        bind (el, binding) {
-          el.innerHTML = binding.value.toupperCase()
-        }
+    'my-directive' : function (el, binding) {
+      el.innerHTML = binding.value.toupperCase()
     }
   }
 3. 使用指令
@@ -24,13 +22,43 @@
 -->
 <!--
 需求: 自定义2个指令
-  1. 功能类型于v-text, 但转换为全大写
+  1. 功能类型于v-text, 但转换为全大写  
   2. 功能类型于v-text, 但转换为全小写
 -->
 
+<div id="test">
+  <p v-text="msg"></p>
+  <h1 v-upper-text="msg"></h1>
+  <p v-lower-text="msg"></p>
+</div>
+
 <script type="text/javascript" src="../js/vue.js"></script>
 <script type="text/javascript">
+  // 注册全局指令upper-text(一定要在产生vm对象前): 对所有vm的模板都有效
+  /* 
+  el: 指令属性所在的标签对象: 当前就是h1标签
+  binding: 包含指令相关信息数据属性的对象, 最重要是value: 表达式的值
+  */
+  Vue.directive('upper-text', function (el, binding) { // 解析指令的回调函数
+    console.log(el, binding)
+    el.textContent = binding.value.toUpperCase()
+  })
 
+  new Vue({
+    el: '#test',
+    data() {
+      return {
+        msg: 'I Will Back!'
+      }
+    },
+    // 注册局部指令 : 只对当前vm的模板有效果
+    directives: { 
+      // lower-text
+      'lower-text': function (el, binding) {
+        el.textContent = binding.value.toLowerCase()
+      }
+    }
+  })
 </script>
 </body>
 </html>

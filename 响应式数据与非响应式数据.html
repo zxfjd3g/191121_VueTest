@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>06_列表渲染</title>
+</head>
+<body>
+
+<!--
+响应式属性/数据: 更新属性值界面会自动更新
+  1). vm对象因为data中的属性而自动添加的属性: vm上的msg与msg2就是响应式的属性
+  2). 通过vm.$set()/Vue.set()给响应式数据对象添加的属性
+非响应式属性/数据: 更新属性值界面不会自动更新
+  1). 手动直接给vm添加的属性
+  2). 通过.的方式直接给响应式数据对象添加的属性
+-->
+
+<div id="demo">
+  <p>{{msg}}</p>
+  <p>{{msg2.title}}--{{msg2.content}}---{{msg2.author}}</p>
+
+  <p>{{msg3}}</p>
+
+  <button @click="update">更新响应式数据</button>
+  <button @click="update2">更新非响应式数据</button>
+  <button @click="addNewProp">给响应式数据对象添加新的属性</button>
+
+</div>
+
+<script type="text/javascript" src="../js/vue.js"></script>
+<script type="text/javascript">
+  new Vue({
+    data() {
+      this.msg3 = 'atguigu'
+      return {
+        msg: 'abc',
+        msg2: {
+          title: 'xxx',
+          content: 'yyy'
+        },
+      }
+    },
+
+    methods: {
+      update () {
+        this.msg = 'cba'
+        this.msg2 = {
+          title: 'zzzz',
+          content: 'ddddd'
+        }
+      },
+
+      update2 () {
+        this.msg3 = this.msg3 + '---'
+        console.log(this.msg3)
+      },
+
+      addNewProp () {
+        // 给响应式数据对象添加一个新的属性
+        // 方式一: 通过.属性名来添加   ==> 新添加的属性是非响应式(没有对应的setter)
+        // this.msg2.author = 'xfzhang'
+        // 方式二: 通过vm.$set()添加属性  ==> 新添加的属性是响应式
+        // this.$set(this.msg2, 'author', 'xfzhang')
+        Vue.set(this.msg2, 'author', 'xfzhang')
+      }
+    },
+  }).$mount('#demo')
+
+</script>
+</body>
+</html>
